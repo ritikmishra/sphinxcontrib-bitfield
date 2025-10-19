@@ -71,13 +71,18 @@ class BitfieldDirective(Directive):
         onlynode = addnodes.only(expr='latex')
         onlynode += nodes.image('', uri=uri)
 
-        content = [nodes.raw('', svg, format='html'), onlynode]
+        # Create the raw HTML node and add class
+        html_node = nodes.raw('', svg, format='html')
+        html_node['classes'].extend(['bitfield', 'bitfield-diagram'])
+
+        content = [html_node, onlynode]
 
         if caption is None:
             return content
 
-        # wrap as a figure
+        # wrap as a figure and add class to the figure node
         fig_node = figure_wrapper(self, content, caption)
+        fig_node['classes'].append(['bitfield', 'bitfield-figure'])
         self.add_name(fig_node)
         return [fig_node]
 
